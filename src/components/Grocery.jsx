@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { GroceryInput } from "./GroceryInput";
 import { GroceryList } from "./GroceryList";
+import { nanoid } from 'nanoid'
 
 export const Grocery = () => {
 
@@ -8,18 +9,18 @@ export const Grocery = () => {
 
     const grocerryFun = (data)=>{
      const item = {
-        id:Math.random(100), 
+        id:nanoid(), 
         title:data,
      }
      setGrocerries([...grocerries,item]);
     };
 
 
-    const deleteItem = (index) => {
-        console.log(index);
-        grocerries.splice(index,1);
+    const deleteItem = (did) => {
+       
+        let new_grocerries = grocerries.filter((e)=> e.id!=did );
      
-        setGrocerries([...grocerries]);
+        setGrocerries([...new_grocerries]);
     }
 
 
@@ -27,8 +28,10 @@ export const Grocery = () => {
         <div>
             <GroceryInput handleAdd={grocerryFun} />
             
-            
-            <GroceryList prod={grocerries} deleteFun={deleteItem}/>
+            {grocerries.map((item)=> (
+               <GroceryList prod={item} deleteFun={deleteItem} key={item.id}/>
+            ))}
+           
         
         </div>
     );
